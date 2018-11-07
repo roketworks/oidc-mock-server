@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Web.Host
 {
@@ -22,7 +23,11 @@ namespace Web.Host
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(); 
+            services.AddMvcCore()
+                .AddApiExplorer()
+                .AddJsonFormatters(); 
+
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "Token Generation Api", Version = "v1" }));
             
             var identityServerBuilder = services.AddIdentityServer(options =>
             {
@@ -45,6 +50,14 @@ namespace Web.Host
                 .AddTestUsers(LoadUsers());
         }
 
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            app.UseIdentityServer();
+            app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Token Generation API"));
+        }
+
         private List<TestUser> LoadUsers()
         {
             var users = Configuration.GetSection("users").Get<List<User>>();
@@ -54,13 +67,6 @@ namespace Web.Host
                 SubjectId =  user.SubjectId,
                 Claims = user.Claims.Select(c => new Claim(c.Type, c.Value)).ToList()
             }).ToList();
-        }
-
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            app.UseDeveloperExceptionPage();
-            app.UseIdentityServer();
-            app.UseMvc();
         }
 
         private class User
