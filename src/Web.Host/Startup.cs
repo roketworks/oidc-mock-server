@@ -52,6 +52,7 @@ namespace Web.Host
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UsePathBase(Configuration["pathBase"]);
             app.UseIdentityServer();
             app.UseMvc();
             app.UseSwagger();
