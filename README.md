@@ -1,1 +1,1 @@
-# oidc-mock-server
+# OIDC mock server
