@@ -4,3 +4,4 @@
 .docker/
 .build/
 tempkey.rsa
+*.user

@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  oidc-server:
+    container_name: oidc-server
+    image: oidc-server-mock
+    build:
+      context: ./
+      dockerfile: ./src/Web.Host/Dockerfile
+      args:
+        - HTTP_PROXY
+        - HTTPS_PROXY
+    environment:
+      token__issuerUri: http://oidc-server
+      resources__0__name: api1
+      resources__0__scopes__0: api1scope1
+      resources__1__name: api2
+      resources__1__scopes__0: api2scope1
+      resources__1__scopes__1: api2scope2
+      clients__0__clientId: someApiOneClient
+      clients__0__allowedScopes__0: api1scope1
+      clients__1__clientId: someApiTwoClient
+      clients__1__allowedScopes__0: api2scope2 
+    ports:
+      - '5200:80'
+    restart: on-failure  
