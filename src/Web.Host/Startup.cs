@@ -24,6 +24,7 @@ namespace Web.Host
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcCore()
+                .AddCors()
                 .AddApiExplorer()
                 .AddJsonFormatters(); 
 
@@ -53,6 +54,7 @@ namespace Web.Host
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UsePathBase(Configuration["pathBase"]);
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseIdentityServer();
             app.UseMvc();
             app.UseSwagger();
