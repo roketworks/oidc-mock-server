@@ -1,0 +1,25 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: Swashbuckle.AspNetCore
+    versions:
+    - 5.6.3
+    - 6.0.0
+    - 6.0.1
+    - 6.0.2
+    - 6.0.3
+    - 6.0.4
+    - 6.0.5
+    - 6.0.6
+    - 6.0.7
+    - 6.1.0
+    - 6.1.1
+    - 6.1.2
+  - dependency-name: IdentityServer4
+    versions:
+    - 4.1.1
